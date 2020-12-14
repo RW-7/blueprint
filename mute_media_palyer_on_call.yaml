@@ -9,24 +9,21 @@ blueprint:
       name: Phone State sensor
       description: All sensors form the mobile app. Select the phone state sensor here.
       selector:
-        target:
-          entity:
-            integration: mobile_app
-            domain: sensor
+        entity:
+          integration: mobile_app
+          domain: sensor
     person:
       name: Person
       description: Select the person that needs to be home.
       selector:
-        target:
-          entity:
-            domain: person
+        entity:
+          domain: person
     media_player: 
       name: Media Player
       description: Select the media player that needs to be muted.
       selector:
-        target:
-          entity:
-            domain: media_player
+        entity:
+          domain: media_player
 
 trigger:
   - platform: state
