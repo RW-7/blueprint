@@ -24,7 +24,12 @@ blueprint:
       selector:
         entity:
           domain: media_player
-
+    zone_select: 
+      name: Zone
+      description: Select the Zone is needet.
+      selector:
+        entity:
+          domain: zone
 trigger:
   - platform: state
     entity_id: !input phone_state
@@ -35,7 +40,7 @@ trigger:
 condition:
   - condition: state
     entity_id: !input person
-    state: Haus
+    state: 1zone_select
   - condition: state
     entity_id: !input media_player
     state: playing
