@@ -1,5 +1,5 @@
 blueprint:
-  name: Mute mediaplayer when calling.
+  name: Mute other Phone when calling.
   description: >
     Mute a mediaplayer when phone rings or is calling.
     Only when person is home and the mediaplayer is playing.
