@@ -35,7 +35,7 @@ trigger:
 condition:
   - condition: state
     entity_id: !input person
-    state: home
+    state: Haus
   - condition: state
     entity_id: !input media_player
     state: playing
