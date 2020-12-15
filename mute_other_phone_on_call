@@ -45,7 +45,7 @@ condition:
     entity_id: !input media_player
     state: playing
 action:
-  service: notify.mobile_app_huawei_janny_2
+  service: notify.mobile_app_huawei_janny
       data:
         message: "command_volume_level"
         title: 0
