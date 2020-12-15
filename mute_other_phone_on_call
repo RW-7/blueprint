@@ -44,10 +44,11 @@ condition:
     state: !input zone
  
 action:
-  domain: mobile_app
-  type: notify
-  device_id: !input notify_device
-  message: "command_volume_level"
-  title: 0
-      data:
-        channel: music_stream
+  
+  - device_id: !input notify_device
+    domain: mobile_app
+    type: notify
+    message: "command_volume_level"
+    title: "0"
+    data:
+    channel: music_stream
