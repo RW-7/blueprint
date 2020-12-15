@@ -41,11 +41,9 @@ condition:
   - condition: state
     entity_id: !input person
     state: !input zone
-  - condition: state
-    entity_id: !input media_player
-    state: playing
+ 
 action:
-  service: notify.mobile_app_huawei_janny
+  - service: notify.mobile_app_huawei_janny
       data:
         message: "command_volume_level"
         title: 0
