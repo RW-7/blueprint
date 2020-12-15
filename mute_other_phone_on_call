@@ -18,19 +18,43 @@ blueprint:
       selector:
         entity:
           domain: person
-    notify_device:
-      name: Device to notify
-      description: Device needs to run the official Home Assistant app to receive notifications.
-      selector:
-        device:
-          integration: mobile_app
-          
-    zone: 
+
+    zone:
       name: Zone
       description: Select the Zone is needet.
       selector:
         entity:
           domain: zone
+
+    notify_device:
+      name: Device to notify
+      description: Device needs to run the official Home Assistant app to receive notifications
+      selector:
+        device:
+          integration: mobile_app
+
+      is_ios:
+        name: Is it an iOS device?
+        description: Toggle if your selected device runs iOS, default is Android
+        selector:
+          boolean:
+        default: false
+
+      notification_title:
+        name: Notification title (Optional)
+        description: 'Default: 0 für lautlos'
+        default: "0"
+
+      notification_message:
+        name: Notification message (Optional)
+        description: 'Default: "command_volume_level"'
+        default: "command_volume_level"
+variables:
+  notify_device: !input notify_device
+  is_ios: !input is_ios
+  notification_title: !input notification_title
+  notification_message: !input notification_message
+
 trigger:
   - platform: state
     entity_id: !input phone_state
@@ -42,12 +66,13 @@ condition:
   - condition: state
     entity_id: !input person
     state: !input zone
- 
+
 action:
-  
+
   - device_id: !input notify_device
     domain: mobile_app
     type: notify
-    message: "command_volume_level"
-    title: "0"
+    message: "{{ notification_message }}"
+    title: "{{ notification_title }}"
+    data:
     channel: music_stream
