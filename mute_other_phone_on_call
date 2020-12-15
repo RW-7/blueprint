@@ -33,19 +33,19 @@ blueprint:
         device:
           integration: mobile_app
 
-      is_ios:
+    is_ios:
         name: Is it an iOS device?
         description: Toggle if your selected device runs iOS, default is Android
         selector:
           boolean:
         default: false
 
-      notification_title:
+    notification_title:
         name: Notification title (Optional)
         description: 'Default: 0 für lautlos'
         default: "0"
 
-      notification_message:
+    notification_message:
         name: Notification message (Optional)
         description: 'Default: "command_volume_level"'
         default: "command_volume_level"
@@ -72,7 +72,7 @@ action:
   - device_id: !input notify_device
     domain: mobile_app
     type: notify
-    message: "{{ notification_message }}"
     title: "{{ notification_title }}"
-    data:
-    channel: music_stream
+    message: "{{ notification_message }}"
+      data:
+        channel: music_stream
