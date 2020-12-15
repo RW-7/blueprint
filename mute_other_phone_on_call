@@ -44,7 +44,7 @@ condition:
  
 action:
   - service: notify.mobile_app_huawei_janny
-      data:
+     - data:
         message: "command_volume_level"
         title: 0
         data:
