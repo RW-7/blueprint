@@ -48,7 +48,6 @@ action:
   type: notify
   device_id: !input notify_device
   message: "command_volume_level"
-      message: "command_volume_level"
-      title: 0
+  title: 0
       data:
         channel: music_stream
