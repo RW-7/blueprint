@@ -40,7 +40,7 @@ trigger:
 condition:
   - condition: state
     entity_id: !input person
-    state: !zone
+    state: !input zone
   - condition: state
     entity_id: !input media_player
     state: playing
