@@ -24,7 +24,7 @@ blueprint:
       selector:
         entity:
           domain: media_player
-    zone_select: 
+    zone: 
       name: Zone
       description: Select the Zone is needet.
       selector:
