@@ -1,0 +1,10 @@
+{
+  "name":"JONIVO Schule",
+  "short_name":"JONIVO Schule",
+  "start_url":"./index.html",
+  "scope":"./",
+  "display":"standalone",
+  "background_color":"#f5f7fb",
+  "theme_color":"#183A63",
+  "description":"JONIVO Schule Web/PWA"
+}
