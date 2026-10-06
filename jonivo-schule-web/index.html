@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#183A63">
+<meta name="description" content="JONIVO Schule – schneller Web/PWA-Arbeitsmodus">
+<link rel="manifest" href="./manifest.webmanifest">
+<title>JONIVO Schule</title>
+<style>
+:root{--navy:#183A63;--blue:#276DB6;--bg:#f5f7fb;--card:#fff;--text:#152238;--muted:#66758a;--line:#dce3ee;--accent:#eaf3ff}
+*{box-sizing:border-box}body{margin:0;font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+button{font:inherit}header{position:sticky;top:0;z-index:4;height:64px;display:flex;align-items:center;gap:14px;padding:0 18px;background:linear-gradient(135deg,var(--navy),var(--blue));color:white;box-shadow:0 2px 8px #0002}
+header h1{font-size:20px;margin:0;flex:1}.pill{font-size:12px;background:#ffffff20;border:1px solid #ffffff35;border-radius:999px;padding:7px 10px}
+.shell{min-height:calc(100vh - 64px);display:grid;grid-template-columns:270px minmax(0,1fr)}
+nav{background:#fff;border-right:1px solid var(--line);padding:16px 12px;position:sticky;top:64px;height:calc(100vh - 64px);overflow:auto}
+.brand{display:flex;gap:12px;align-items:center;padding:12px 10px 18px}.logo{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:var(--accent);font-size:24px}
+.section{width:100%;border:0;background:transparent;text-align:left;padding:11px 12px;border-radius:12px;font-weight:750;color:#30445f;cursor:pointer}
+.section:hover,.section.active{background:var(--accent);color:var(--navy)}
+.sub{padding:2px 0 9px 16px}.sub button{width:100%;border:0;background:transparent;text-align:left;padding:8px 10px;border-radius:10px;color:#55677f;cursor:pointer}
+.sub button.active{background:#f1f5fb;color:var(--navy);font-weight:700}
+main{padding:26px;min-width:0}.content{max-width:1180px;margin:auto}.eyebrow{color:var(--blue);font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.08em}
+h2{font-size:32px;margin:2px 0 0}h3{font-size:20px;margin:4px 0 18px;color:#43556e}.hero{background:linear-gradient(135deg,#fff,#eef5ff);border:1px solid #d9e7fb;border-radius:22px;padding:22px;display:flex;gap:16px;align-items:flex-start}
+.hero .ico{font-size:34px}.hero b{display:block;font-size:20px;margin-bottom:6px}.hero p{margin:0;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-top:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;min-height:126px;box-shadow:0 3px 12px #13213d0c}
+.click{cursor:pointer;transition:.15s transform,.15s box-shadow}.click:hover{transform:translateY(-2px);box-shadow:0 7px 20px #13213d18}.card .icon{font-size:30px}.card .title{font-weight:850;font-size:18px;margin-top:18px}.card .caption{font-size:14px;color:var(--muted);margin-top:3px}
+.notice{margin-top:18px;border-left:4px solid var(--blue);background:#fff;padding:14px 16px;border-radius:12px;color:#4a5d73}
+dialog{border:0;border-radius:18px;padding:0;max-width:520px;width:calc(100% - 28px);box-shadow:0 18px 70px #0005}dialog::backdrop{background:#0d1b2a99}.dialogBody{padding:22px}.dialogBody h3{margin:0 0 10px;color:var(--text)}.dialogBody p{color:var(--muted)}.dialogBody button{border:0;background:var(--blue);color:#fff;padding:10px 14px;border-radius:11px;cursor:pointer}
+.mobileNav{display:none}
+@media(max-width:860px){.shell{display:block}nav{display:none}.mobileNav{display:block;background:#fff;border-bottom:1px solid var(--line);padding:10px;overflow:auto;white-space:nowrap}.mobileNav button{border:0;background:#f0f4f9;border-radius:999px;padding:9px 13px;margin-right:6px}.mobileNav button.active{background:var(--navy);color:#fff}main{padding:18px}h2{font-size:28px}.pill{display:none}}
+</style>
+</head>
+<body>
+<header><div style="font-size:26px">🎓</div><h1>JONIVO Schule</h1><span class="pill">Web/PWA · Version 0.9.79</span></header>
+<div id="mobileNav" class="mobileNav"></div>
+<div class="shell">
+<nav>
+  <div class="brand"><div class="logo">📘</div><div><strong>JONIVO Schule</strong><div style="font-size:13px;color:var(--muted)">Dein Weg. Dein Tempo.</div></div></div>
+  <div id="nav"></div>
+</nav>
+<main><div id="content" class="content"></div></main>
+</div>
+<dialog id="dlg"><div class="dialogBody"><h3 id="dlgTitle"></h3><p id="dlgText"></p><button onclick="dlg.close()">Schließen</button></div></dialog>
+<script>
+const menus={
+'Übersicht':['Start','Heute','Lernstand','Mitteilungen'],
+'Kinder':['Kinderprofile','Lernprofil','Lehrpläne / Klassen','Kompetenzen','Lernstand','Dokumente','Nachteilsausgleich','Familien & Erwachsene'],
+'Lernen':['Tagesplan','Fächer','Einstufungstest','Lehrplanbestand','Aufgaben / Übungen','Lernstoff / Medienpakete','Hintergrundaufgaben'],
+'Medien':['Medienbibliothek','PDF → MP3','Text → MP3','MP3-Verlauf','Offlinepakete'],
+'Geräte':['Geräteübersicht','Geräte koppeln','Synchronisation','Letzte Aktualisierung','Sicherung / Wiederherstellung'],
+'System':['System & Updates','Sprachsystem','Offline-KI','Sprachen verwalten','Daten & Import','Datenbank','Fehlerberichte','Entwickler / Buildcenter']
+};
+const icons={'Übersicht':'▦','Kinder':'👨‍👩‍👧','Lernen':'🎓','Medien':'▶','Geräte':'💻','System':'⚙'};
+let state=JSON.parse(localStorage.getItem('jonivo-school-web-nav')||'null')||{section:'Übersicht',page:'Start'};
+if(!menus[state.section]||!menus[state.section].includes(state.page))state={section:'Übersicht',page:'Start'};
+function save(){localStorage.setItem('jonivo-school-web-nav',JSON.stringify(state))}
+function openPage(s,p){state={section:s,page:p||menus[s][0]};save();render()}
+function nav(){
+ const root=document.getElementById('nav');root.innerHTML='';
+ Object.entries(menus).forEach(([s,pages])=>{
+  const b=document.createElement('button');b.className='section'+(state.section===s?' active':'');b.textContent=(icons[s]||'•')+'  '+s;b.onclick=()=>openPage(s);root.appendChild(b);
+  if(state.section===s){const sub=document.createElement('div');sub.className='sub';pages.forEach(p=>{const x=document.createElement('button');x.className=state.page===p?'active':'';x.textContent=p;x.onclick=()=>openPage(s,p);sub.appendChild(x)});root.appendChild(sub)}
+ });
+ const m=document.getElementById('mobileNav');m.innerHTML='';
+ Object.keys(menus).forEach(s=>{const b=document.createElement('button');b.className=state.section===s?'active':'';b.textContent=s;b.onclick=()=>openPage(s);m.appendChild(b)});
+}
+function card(icon,title,caption,s,p){return '<div class="card click" onclick="openPage(\''+s+'\',\''+p+'\')"><div class="icon">'+icon+'</div><div class="title">'+title+'</div><div class="caption">'+caption+'</div></div>'}
+function overview(){
+ return '<div class="hero"><div class="ico">⚡</div><div><b>Schneller Web-Arbeitsmodus</b><p>Die Schuloberfläche läuft direkt im Browser. Nach dem ersten Laden kann diese PWA auch offline aus dem Browser-Cache geöffnet werden.</p></div></div>'+
+ '<div class="grid">'+
+ card('📅','Heute','Tagesübersicht','Übersicht','Heute')+
+ card('📚','Fächer','Lernen und Unterricht','Lernen','Fächer')+
+ card('📈','Lernstand','Fortschritt ansehen','Übersicht','Lernstand')+
+ card('🎬','Medien','Medienbibliothek','Medien','Medienbibliothek')+
+ card('💻','Geräte','Geräteübersicht','Geräte','Geräteübersicht')+
+ card('⚙','System','Einstellungen und Status','System','System & Updates')+
+ '</div>';
+}
+function learning(){
+ const subjects=[['➗','Mathematik','Zahlen, Rechnen und Rätsel'],['📖','Deutsch','Lesen, Schreiben und Sprache'],['🌍','Englisch','Wörter, Sätze und Dialoge'],['🧪','Naturwissenschaften','Forschen und Verstehen']];
+ return '<div class="notice">Lernseiten, Navigation und Oberfläche können hier schnell weiterentwickelt werden. Betriebssystemgebundene Funktionen bleiben im nativen Windows-/Android-Teil.</div><div class="grid">'+subjects.map(x=>'<div class="card click" onclick="showSubject(\''+x[1]+'\',\''+x[2]+'\')"><div class="icon">'+x[0]+'</div><div class="title">'+x[1]+'</div><div class="caption">'+x[2]+'</div></div>').join('')+'</div>';
+}
+function generic(){
+ const special={
+  'Kinderprofile':'Kinderprofile und persönliche Lernzugänge.',
+  'Lehrpläne / Klassen':'Lehrpläne, Klassen und individuelle Zuordnung.',
+  'Geräte koppeln':'Kopplung bleibt eine native Family-Hub-Funktion und wird hier nicht vorgetäuscht.',
+  'Synchronisation':'Der Browser zeigt die Oberfläche; der bestehende native Family-Hub bleibt für LAN-Synchronisation zuständig.',
+  'Offline-KI':'Native Offline-KI bleibt im Windows-/Android-Adapter und wird im Browser nicht nachgebaut.',
+  'Datenbank':'Native SQLite-Datenbanken bleiben im nativen Adapter.'
+ };
+ return '<div class="card"><div class="title">'+state.page+'</div><div class="caption" style="font-size:16px;margin-top:10px">'+(special[state.page]||'Dieser Bereich ist im gemeinsamen School-Navigationspfad angelegt und kann ohne Windows-Vollbuild weiterentwickelt werden.')+'</div></div>';
+}
+function render(){
+ nav();const c=document.getElementById('content');
+ c.innerHTML='<div class="eyebrow">'+state.section+'</div><h2>'+state.section+'</h2><h3>'+state.page+'</h3>'+
+ ((state.section==='Übersicht'&&state.page==='Start')?overview():(state.section==='Lernen'?learning():generic()));
+}
+function showSubject(t,d){dlgTitle.textContent=t;dlgText.textContent=d+'. Diese Web-Oberfläche ist der schnelle gemeinsame Entwicklungspfad; echte lokale Familien- und Lerndaten werden nicht in einen zweiten Datensilo kopiert.';dlg.showModal()}
+render();
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}))}
+</script>
+</body>
+</html>
