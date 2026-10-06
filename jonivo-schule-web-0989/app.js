@@ -370,8 +370,8 @@
         });
 
         const failed=result.failures?.length||0;
-        const summary=document.getElementById('bulkSummary');
-        if(summary) summary.innerHTML='<b>Import abgeschlossen</b> · '+result.documentsImported+
+        const finalSummary=document.getElementById('bulkSummary');
+        if(finalSummary) finalSummary.innerHTML='<b>Import abgeschlossen</b> · '+result.documentsImported+
           ' Lehrplandokumente · '+result.packagesInstalled+' Pakete neu'+
           (result.unchanged?' · '+result.unchanged+' unverändert':'')+
           (failed?' · '+failed+' Fehler':'');
